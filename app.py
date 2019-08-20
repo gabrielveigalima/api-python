@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request
-import usuarios
+from usuarios import Usuario
 
 app = Flask(__name__)
 
-
+usuario = Usuario()
 #Pagina inicial
 @app.route('/')
 def home():
@@ -11,13 +11,13 @@ def home():
 
 #retorna todos usuarios
 @app.route('/users', methods=['GET'])
-def all_users():
-    return jsonify(usuarios.all_users()), 200
+def select_all_users():
+    return jsonify(usuario.select_all()), 200
 
 #retorna o usuario da id
 @app.route('/user/<int:id>', methods=['GET'])
 def select_users_per_id(id):
-    for u in usuarios.all_users():
+    for u in usuario.select_all():
         if u['id'] == id:
             return jsonify(u), 200
 
@@ -25,25 +25,20 @@ def select_users_per_id(id):
 
 # cadastra usuario
 @app.route('/user', methods=['POST'])
-def add_user():
+def insert_user():
     data = request.get_json()
-    usuarios.append(data)
+    usuario.append(data)
     return jsonify(data), 201
 
 # edita usuario
 @app.route('/user/<int:id>', methods=['PUT'])
 def update_user(id):
-    for u in usuarios.all_users():
-        if u['id'] == id:
-            u['nome'] = request.get_json().get('nome')
-
-            return jsonify(u), 200
-    return jsonify({'error': 'user not found'}), 404
+    return usuario.update(id)
 
 # remove usuario
 @app.route('/user/<int:id>', methods=['DELETE'])
 def remove_user(id):
-    if usuarios.remove_user(id):
+    if usuario.remove(id):
         return jsonify({'message': 'deleted user %d' % id}), 200
     else:
         return jsonify({'error': 'user not found'}), 404
