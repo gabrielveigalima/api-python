@@ -14,5 +14,13 @@ users = [
         'nome': 'Pedro'
     }
 ]
+
+#lista todoos usuarios
 def all_users():
     return users
+
+
+#adicioan usario
+
+def append(data):
+    users.append(data)
