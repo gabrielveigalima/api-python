@@ -30,6 +30,16 @@ def add_user():
     usuarios.append(data)
     return jsonify(data), 201
 
+# edita usuario
+@app.route('/usuarios/<int:id>', methods=['PUT'])
+def update_user(id):
+    for u in usuarios.all_users():
+        if u['id'] == id:
+            u['nome'] = request.get_json().get('nome')
+
+            return jsonify(u), 200
+    return jsonify({'error': 'user not found'}), 404
+
 
 
 if __name__ == '__main__':
