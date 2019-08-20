@@ -10,12 +10,12 @@ def home():
     return 'Hello, world!!', 200
 
 #retorna todos usuarios
-@app.route('/usuarios', methods=['GET'])
+@app.route('/users', methods=['GET'])
 def all_users():
     return jsonify(usuarios.all_users()), 200
 
 #retorna o usuario da id
-@app.route('/usuarios/<int:id>', methods=['GET'])
+@app.route('/user/<int:id>', methods=['GET'])
 def select_users_per_id(id):
     for u in usuarios.all_users():
         if u['id'] == id:
@@ -24,14 +24,14 @@ def select_users_per_id(id):
     return jsonify({'error': 'not found'}), 404
 
 # cadastra usuario
-@app.route('/usuarios', methods=['POST'])
+@app.route('/user', methods=['POST'])
 def add_user():
     data = request.get_json()
     usuarios.append(data)
     return jsonify(data), 201
 
 # edita usuario
-@app.route('/usuarios/<int:id>', methods=['PUT'])
+@app.route('/user/<int:id>', methods=['PUT'])
 def update_user(id):
     for u in usuarios.all_users():
         if u['id'] == id:
@@ -41,7 +41,7 @@ def update_user(id):
     return jsonify({'error': 'user not found'}), 404
 
 # remove usuario
-@app.route('/usuarios/<int:id>', methods=['DELETE'])
+@app.route('/user/<int:id>', methods=['DELETE'])
 def remove_user(id):
     if usuarios.remove_user(id):
         return jsonify({'message': 'deleted user %d' % id}), 200
