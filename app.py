@@ -40,6 +40,13 @@ def update_user(id):
             return jsonify(u), 200
     return jsonify({'error': 'user not found'}), 404
 
+# remove usuario
+@app.route('/usuarios/<int:id>', methods=['DELETE'])
+def remove_user(id):
+    if usuarios.remove_user(id):
+        return jsonify({'message': 'deleted user %d' % id}), 200
+    else:
+        return jsonify({'error': 'user not found'}), 404
 
 
 if __name__ == '__main__':

@@ -19,6 +19,13 @@ users = [
 def all_users():
     return users
 
+def remove_user(id):
+
+    users[id - 1] = {
+        "id": id,
+        "status": "DELETED"
+    }
+    return True
 
 #adicioan usario
 
