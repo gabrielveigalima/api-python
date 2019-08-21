@@ -27,18 +27,24 @@ class Usuario(object):
         ]
 
 
-    #lista todoos usuarios
+    #seletec all users
     def select_all(self):
         return self.users
 
-    #selelcionar user por uuid
+    #select user per uuid
     def select_users_per_id(self, uuid):
         pass
 
-    #adicioan usario
-
+    #insert user
     def append(self, data):
-        self.users.append(data)
+        print(data)
+        newUser = {
+            "id" : len(self.users) + 1,
+            "uuid": uuid4(),
+            "nome": data['nome']
+        }
+        self.users.append(newUser)
+        return jsonify(data), 201
 
     #update user
     def update(self, uuid):

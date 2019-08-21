@@ -20,15 +20,12 @@ def select_users_per_id(uuid):
     for u in usuario.select_all():
         if u['id'] == uuid:
             return jsonify(u), 200
-
     return jsonify({'error': 'not found'}), 404
 
 # cadastra usuario
 @app.route('/user', methods=['POST'])
 def insert_user():
-    data = request.get_json()
-    usuario.append(data)
-    return jsonify(data), 201
+    return usuario.append(request.get_json())
 
 # edita usuario
 @app.route('/user/<string:uuid>', methods=['PUT'])
