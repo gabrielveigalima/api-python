@@ -40,7 +40,6 @@ class User(object):
 
     #insert user
     def append(self, data):
-        print(data)
         newUser = {
             "id" : len(self.users) + 1,
             "uuid": uuid4(),

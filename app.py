@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from user import User
+from todos import ToDos
 
 app = Flask(__name__)
 
@@ -42,10 +43,40 @@ def remove_user(uuid):
 
 
 # ROTAS TO-DOS
-@app.route('/to-dos')
-def to_dos_hello():
-    return 'Hello, world!!', 200
 
+to_dos = ToDos()
+
+# cadastra to-dos
+@app.route('/to-dos', methods=['POST'])
+def insert_to_dos():
+    return to_dos.append(request.get_json())
+
+#retorna todos usuarios
+@app.route('/to-dos', methods=['GET'])
+def select_all_do_dos():
+    return jsonify(to_dos.select_all()), 200
+'''
+#retorna o usuario da id
+@app.route('/user/<string:uuid>', methods=['GET'])
+def select_users_per_id(uuid):
+    return user.select_per_uuid(uuid)
+
+# cadastra usuario
+@app.route('/user', methods=['POST'])
+def insert_user():
+    return user.append(request.get_json())
+
+# edita usuario
+@app.route('/user/<string:uuid>', methods=['PUT'])
+def update_user(uuid):
+    return user.update(uuid)
+
+# remove usuario
+@app.route('/user/<string:uuid>', methods=['DELETE'])
+def remove_user(uuid):
+    return user.remove(uuid)
+
+'''
 
 if __name__ == '__main__':
     app.run(debug=True)
