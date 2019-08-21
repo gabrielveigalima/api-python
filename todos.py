@@ -14,7 +14,10 @@ class ToDos(object):
         return self.to_dos
 
     def select_per_uuid(self, uuid):
-        pass
+        for to in self.select_all():
+            if str(to['uuid']) == uuid:
+                return jsonify(to), 200
+        return jsonify({'error': 'not found'}), 404
 
     def append(self, data):
 

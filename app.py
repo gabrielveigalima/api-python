@@ -51,16 +51,16 @@ to_dos = ToDos()
 def insert_to_dos():
     return to_dos.append(request.get_json())
 
-#retorna todos usuarios
+#retorna todos to-dos
 @app.route('/to-dos', methods=['GET'])
 def select_all_do_dos():
     return jsonify(to_dos.select_all()), 200
-'''
-#retorna o usuario da id
-@app.route('/user/<string:uuid>', methods=['GET'])
-def select_users_per_id(uuid):
-    return user.select_per_uuid(uuid)
 
+#retorna o to-dos da id
+@app.route('/to-dos/<string:uuid>', methods=['GET'])
+def select_to_dos_per_id(uuid):
+    return to_dos.select_per_uuid(uuid)
+'''
 # cadastra usuario
 @app.route('/user', methods=['POST'])
 def insert_user():
