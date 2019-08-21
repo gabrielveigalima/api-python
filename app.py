@@ -21,7 +21,7 @@ def select_all_users():
 #retorna o usuario da id
 @app.route('/user/<string:uuid>', methods=['GET'])
 def select_users_per_id(uuid):
-    return user.select_per_id(uuid)
+    return user.select_per_uuid(uuid)
 
 # cadastra usuario
 @app.route('/user', methods=['POST'])

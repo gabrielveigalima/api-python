@@ -32,7 +32,7 @@ class User(object):
         return self.users
 
     #select user per uuid
-    def select_per_id(self, uuid):
+    def select_per_uuid(self, uuid):
         for u in self.select_all():
             if str(u['uuid']) == uuid:
                 return jsonify(u), 200
