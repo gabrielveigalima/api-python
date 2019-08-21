@@ -10,15 +10,19 @@ class ToDos(object):
         self.to_dos = []
         self.user = User()
 
+    #select all to-dos
     def select_all(self):
         return self.to_dos
 
+    # select to-dos por uuid
     def select_per_uuid(self, uuid):
         for to in self.select_all():
             if str(to['uuid']) == uuid:
                 return jsonify(to), 200
         return jsonify({'error': 'not found'}), 404
 
+
+    #insert to-dos
     def append(self, data):
 
         newTodos = {
@@ -33,6 +37,7 @@ class ToDos(object):
         self.to_dos.append(newTodos)
         return jsonify(data), 201
 
+    #update to-dos
     def update(self, uuid):
         for to in self.select_all():
             if str(to['uuid']) == uuid:
@@ -45,6 +50,8 @@ class ToDos(object):
                 return jsonify(to), 200
         return jsonify({'error': 'to-dos not found'}), 404
 
+
+    #remove to-dos
     def delete(self, uuid):
         for self.x in self.select_all():
             if str(self.x['uuid']) == str(uuid):
