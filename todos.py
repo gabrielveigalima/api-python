@@ -1,8 +1,3 @@
-from uuid import uuid4
-from user import User
-
-
-
 #TO-DOS
 class ToDos(object):
 

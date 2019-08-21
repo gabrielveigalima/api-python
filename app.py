@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from user import User
-from todos import ToDos
 
 app = Flask(__name__)
 
