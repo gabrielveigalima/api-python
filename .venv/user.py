@@ -2,7 +2,7 @@ from flask import  jsonify, request
 
 from uuid import uuid4
 
-class Usuario(object):
+class User(object):
 
     def __init__(self):
 
@@ -32,8 +32,11 @@ class Usuario(object):
         return self.users
 
     #select user per uuid
-    def select_users_per_id(self, uuid):
-        pass
+    def select_per_id(self, uuid):
+        for u in self.select_all():
+            if str(u['uuid']) == uuid:
+                return jsonify(u), 200
+        return jsonify({'error': 'not found'}), 404
 
     #insert user
     def append(self, data):
@@ -58,7 +61,6 @@ class Usuario(object):
     #delete user
     def remove(self, uuid):
         for self.x in self.select_all():
-            print(self.x['uuid'], uuid)
             if str(self.x['uuid']) == str(uuid):
                 del self.users[self.x['id'] - 1]
                 return jsonify({'message': 'deleted user %s' % str(uuid)}), 200
