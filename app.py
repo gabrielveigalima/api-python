@@ -67,14 +67,13 @@ def select_to_dos_per_id(uuid):
 def update_to_dos(uuid):
     return to_dos.update(uuid)
 
-'''
 
-# remove usuario
-@app.route('/user/<string:uuid>', methods=['DELETE'])
-def remove_user(uuid):
-    return user.remove(uuid)
+# remove to-dos
+@app.route('/to-dos/<string:uuid>', methods=['DELETE'])
+def remove_to_dos(uuid):
+    return to_dos.delete(uuid)
 
-'''
+
 
 if __name__ == '__main__':
     app.run(debug=True)

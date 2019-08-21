@@ -46,4 +46,9 @@ class ToDos(object):
         return jsonify({'error': 'to-dos not found'}), 404
 
     def delete(self, uuid):
-        pass
+        for self.x in self.select_all():
+            if str(self.x['uuid']) == str(uuid):
+                del self.to_dos[self.x['id'] - 1]
+                return jsonify({'message': 'deleted to-dos %s' % str(uuid)}), 200
+            else:
+                return jsonify({'error': 'to-dos not found'}), 404
