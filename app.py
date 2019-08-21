@@ -9,6 +9,9 @@ user = User()
 def home():
     return 'Hello, world!!', 200
 
+
+# ROTAS DE USUÁRIOS
+
 #retorna todos usuarios
 @app.route('/users', methods=['GET'])
 def select_all_users():
