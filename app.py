@@ -16,9 +16,9 @@ def select_all_users():
 
 #retorna o usuario da id
 @app.route('/user/<int:id>', methods=['GET'])
-def select_users_per_id(id):
+def select_users_per_id(uuid):
     for u in usuario.select_all():
-        if u['id'] == id:
+        if u['id'] == uuid:
             return jsonify(u), 200
 
     return jsonify({'error': 'not found'}), 404
@@ -31,18 +31,14 @@ def insert_user():
     return jsonify(data), 201
 
 # edita usuario
-@app.route('/user/<int:id>', methods=['PUT'])
-def update_user(id):
-    return usuario.update(id)
+@app.route('/user/<string:uuid>', methods=['PUT'])
+def update_user(uuid):
+    return usuario.update(uuid)
 
 # remove usuario
-@app.route('/user/<int:id>', methods=['DELETE'])
-def remove_user(id):
-    if usuario.remove(id):
-        return jsonify({'message': 'deleted user %d' % id}), 200
-    else:
-        return jsonify({'error': 'user not found'}), 404
-
+@app.route('/user/<string:uuid>', methods=['DELETE'])
+def remove_user(uuid):
+    return usuario.remove(uuid)
 
 if __name__ == '__main__':
     app.run(debug=True)
