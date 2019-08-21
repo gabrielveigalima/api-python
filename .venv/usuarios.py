@@ -40,6 +40,7 @@ class Usuario(object):
     def append(self, data):
         self.users.append(data)
 
+    #update user
     def update(self, uuid):
         for u in self.select_all():
             if u['uuid'] == uuid:
@@ -48,6 +49,7 @@ class Usuario(object):
                 return jsonify(u), 200
         return jsonify({'error': 'user not found'}), 404
 
+    #delete user
     def remove(self, uuid):
         for self.x in self.select_all():
             print(self.x['uuid'], uuid)
