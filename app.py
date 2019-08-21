@@ -60,16 +60,14 @@ def select_all_do_dos():
 @app.route('/to-dos/<string:uuid>', methods=['GET'])
 def select_to_dos_per_id(uuid):
     return to_dos.select_per_uuid(uuid)
-'''
-# cadastra usuario
-@app.route('/user', methods=['POST'])
-def insert_user():
-    return user.append(request.get_json())
 
-# edita usuario
-@app.route('/user/<string:uuid>', methods=['PUT'])
-def update_user(uuid):
-    return user.update(uuid)
+
+# edita to-dos
+@app.route('/to-dos/<string:uuid>', methods=['PUT'])
+def update_to_dos(uuid):
+    return to_dos.update(uuid)
+
+'''
 
 # remove usuario
 @app.route('/user/<string:uuid>', methods=['DELETE'])

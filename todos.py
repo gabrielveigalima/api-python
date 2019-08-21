@@ -27,13 +27,23 @@ class ToDos(object):
             "title": data['title'],
             "description": data['description'],
             "expiration": data['expiration'],
+            "status": data['status'],
             "user": data['user_uuid']
         }
         self.to_dos.append(newTodos)
         return jsonify(data), 201
 
-    def update(self, data):
-        pass
+    def update(self, uuid):
+        for to in self.select_all():
+            if str(to['uuid']) == uuid:
+                to['description'] = request.get_json().get('description')
+                to['expiration'] = request.get_json().get('expiration')
+                to['title'] = request.get_json().get('title')
+                to['user'] = request.get_json().get('user')
+                to['status'] = request.get_json().get('status')
+
+                return jsonify(to), 200
+        return jsonify({'error': 'to-dos not found'}), 404
 
     def delete(self, uuid):
         pass
