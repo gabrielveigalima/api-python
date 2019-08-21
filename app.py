@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request
 from user import User
+from todos import ToDos
 
 app = Flask(__name__)
 
-user = User()
 #Pagina inicial
 @app.route('/')
 def home():
@@ -11,6 +11,8 @@ def home():
 
 
 # ROTAS DE USUÁRIOS
+
+user = User()
 
 #retorna todos usuarios
 @app.route('/users', methods=['GET'])
@@ -36,6 +38,15 @@ def update_user(uuid):
 @app.route('/user/<string:uuid>', methods=['DELETE'])
 def remove_user(uuid):
     return user.remove(uuid)
+
+# FIM ROTAS DE USUÁRIOS
+
+
+# ROTAS TO-DOS
+@app.route('/to-dos')
+def to_dos_hello():
+    return 'Hello, world!!', 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
