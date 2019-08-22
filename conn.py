@@ -7,6 +7,7 @@ import pymysql
 class Conn(object):
 
     def __init__(self):
+        # read credentials db
         with open("./Credentials/conn.json") as fh:
             self.red_creds = simplejson.loads(fh.read())
 
@@ -19,6 +20,7 @@ class Conn(object):
         pymysql.install_as_MySQLdb()
 
     def conn(self):
-        # read credentials db
+        # create engine
         return create_engine(self.connection_string)
+
 

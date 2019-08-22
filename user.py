@@ -1,38 +1,35 @@
 from flask import  jsonify, request
 
 from uuid import uuid4
-
+from conn import Conn
 class User(object):
 
     def __init__(self):
 
-        self.users = [
-            {
-                'id': 1,
-                'uuid': uuid4(),
-                'nome': 'Gabriel'
-            }, {
-                'id': 2,
-                'uuid': uuid4(),
-                'nome': 'João'
-            }, {
-                'id': 3,
-                'uuid': uuid4(),
-                'nome': 'Paulo'
-            }, {
-                'id': 4,
-                'uuid': uuid4(),
-                'nome': 'Pedro'
-            }
-        ]
+        conn = Conn()
+        self.engine = conn.conn()
 
 
     #seletec all users
     def select_all(self):
-        return self.users
+        query = '''
+                 SELECT *
+                 FROM users         			     
+                '''
+        self.result_query = self.engine.execute(query)
+        users = []
+        for x in self.result_query:
+            users.append({
+                 "id": x[0],
+                 "uuid": x[1],
+                 "name": x[2],
+             })
+
+        return users
 
     #select user per uuid
     def select_per_uuid(self, uuid):
+
         for u in self.select_all():
             if str(u['uuid']) == uuid:
                 return jsonify(u), 200
