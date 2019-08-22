@@ -20,18 +20,39 @@ class ToDos(object):
                        '''
         self.result_query = self.engine.execute(query)
         todos = []
-        for x in self.result_query:
+        for resul in self.result_query:
             todos.append({
-                "id": x[0],
-                "uuid": x[1],
-                "name": x[2],
+                "id": resul[0],
+                "uuid": resul[1],
+                "description": resul[3],
+                "expiration": resul[4],
+                "status": resul[5],
+                "user": resul[6]
             })
 
         return todos, 200
-        
+
 
     # select to-dos por uuid
     def select_per_uuid(self, uuid):
+        query = """SELECT * FROM todos WHERE uuid = '{}' """.format(uuid)
+        result_query = self.engine.execute(query)
+        try:
+            resul = next(result_query)
+            todos = {
+                "id": resul[0],
+                "uuid": resul[1],
+                "description": resul[3],
+                "expiration": resul[4],
+                "status": resul[5],
+                "user": resul[6]
+            }
+
+            return jsonify(todos), 200
+
+        except StopIteration as ex:
+            return jsonify({'error': 'not found'}), 404
+
         for to in self.select_all():
             if str(to['uuid']) == uuid:
                 return jsonify(to), 200
@@ -45,7 +66,7 @@ class ToDos(object):
         if self.user.select_per_uuid(data['user_uuid'])[1] == 200:
             uuid = uuid4()
             query = """INSERT INTO todos
-                                    (uuid,title,description,expiration,status,user)
+                                    (uuid,title,description,expiration,status,`user`)
                                 VALUES 
                                     ('{}','{}','{}','{}','{}','{}') """.format(uuid, data['title'],
                                                                                data['description'], data['expiration'],
