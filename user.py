@@ -71,11 +71,7 @@ class User(object):
 
             try:
                 result_query = self.engine.execute(query)
-                user = {
-                    "name": name
-                }
-
-                return user, 200
+                return jsonify({'message': 'update user %s' % str(uuid)}), 200, 200
 
             except StopIteration as ex:
                 return jsonify({'error': ex}), 404
@@ -83,9 +79,15 @@ class User(object):
 
     #delete user
     def remove(self, uuid):
-        for self.x in self.select_all():
-            if str(self.x['uuid']) == str(uuid):
-                del self.users[self.x['id'] - 1]
+        
+        if self.select_per_uuid(uuid)[1] == 200:
+            query = """DELETE FROM users WHERE uuid = '{}' """.format( uuid)
+
+            try:
+                result_query = self.engine.execute(query)
                 return jsonify({'message': 'deleted user %s' % str(uuid)}), 200
-            else:
-                return jsonify({'error': 'user not found'}), 404
+
+            except StopIteration as ex:
+                return jsonify({'error': ex}), 404
+
+
