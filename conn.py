@@ -20,5 +20,5 @@ class Conn(object):
 
     def conn(self):
         # read credentials db
-        self.timescale_engine = create_engine(self.connection_string)
-        print(self.timescale_engine )
+        return create_engine(self.connection_string)
+
