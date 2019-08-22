@@ -61,8 +61,6 @@ class ToDos(object):
 
     #insert to-dos
     def append(self, data):
-
-
         if self.user.select_per_uuid(data['user_uuid'])[1] == 200:
             uuid = uuid4()
             query = """INSERT INTO todos
@@ -88,18 +86,30 @@ class ToDos(object):
             except StopIteration as ex:
                 return jsonify({'error': ex}), 404
         return jsonify({'error': 'user not found'}), 404
+
     #update to-dos
     def update(self, uuid):
-        for to in self.select_all():
-            if str(to['uuid']) == uuid:
-                to['description'] = request.get_json().get('description')
-                to['expiration'] = request.get_json().get('expiration')
-                to['title'] = request.get_json().get('title')
-                to['user'] = request.get_json().get('user')
-                to['status'] = request.get_json().get('status')
+        #check if all exist
+        if self.select_per_uuid(uuid)[1] == 200:
 
-                return jsonify(to), 200
+            query = """UPDATE todos SET description = '{}', expiration = '{}',
+                        title = '{}', user = '{}', status = '{}'
+                        WHERE uuid = '{}' """.format(request.get_json().get('description'),
+                                                     request.get_json().get('expiration'),
+                                                     request.get_json().get('title'),
+                                                     request.get_json().get('user'),
+                                                     request.get_json().get('status'),uuid)
+
+            try:
+                result_query = self.engine.execute(query)
+                return jsonify({'message': 'update to-dos %s' % str(uuid)}), 200
+
+            except StopIteration as ex:
+                return jsonify({'error': ex}), 404
+
         return jsonify({'error': 'to-dos not found'}), 404
+
+
 
 
     #remove to-dos
