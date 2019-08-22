@@ -25,7 +25,7 @@ class User(object):
                  "name": x[2],
              })
 
-        return users
+        return users, 200
 
     #select user per uuid
     def select_per_uuid(self, uuid):
@@ -39,20 +39,29 @@ class User(object):
                 "name": resul[2]
             }
 
-            return user
+            return jsonify(user), 200
 
         except StopIteration as ex:
             return jsonify({'error': 'not found'}), 404
 
     #insert user
     def append(self, data):
-        newUser = {
-            "id" : len(self.users) + 1,
-            "uuid": uuid4(),
-            "nome": data['nome']
-        }
-        self.users.append(newUser)
-        return jsonify(data), 201
+        uuid = uuid4()
+        query = """INSERT INTO users
+                        (uuid,name)
+                    VALUES 
+                        ('{}','{}') """.format(uuid,data['nome'])
+        try:
+            result_query = self.engine.execute(query)
+            user = {
+                "uuid": uuid,
+                "name": data['nome']
+            }
+
+            return user, 201
+
+        except StopIteration as ex:
+            return jsonify({'error': ex}), 404
 
     #update user
     def update(self, uuid):
