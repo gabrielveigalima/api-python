@@ -114,9 +114,14 @@ class ToDos(object):
 
     #remove to-dos
     def delete(self, uuid):
-        for self.x in self.select_all():
-            if str(self.x['uuid']) == str(uuid):
-                del self.to_dos[self.x['id'] - 1]
-                return jsonify({'message': 'deleted to-dos %s' % str(uuid)}), 200
-            else:
-                return jsonify({'error': 'to-dos not found'}), 404
+        if self.select_per_uuid(uuid)[1] == 200:
+            query = """DELETE FROM todos WHERE uuid = '{}' """.format(uuid)
+
+            try:
+                result_query = self.engine.execute(query)
+                return jsonify({'message': 'deleted tod-os %s' % str(uuid)}), 200
+
+            except StopIteration as ex:
+                return jsonify({'error': ex}), 404
+
+        return jsonify({'error': 'to-dos not found'}), 404
