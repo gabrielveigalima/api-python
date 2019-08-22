@@ -1,14 +1,16 @@
 from uuid import uuid4
 from flask import jsonify, request
 from user import User
+from conn import Conn
 
 
 #TO-DOS
 class ToDos(object):
 
     def __init__(self):
-        self.to_dos = []
         self.user = User()
+        conn = Conn()
+        self.engine = conn.conn()
 
     #select all to-dos
     def select_all(self):
@@ -25,18 +27,32 @@ class ToDos(object):
     #insert to-dos
     def append(self, data):
 
-        newTodos = {
-            "id": len(self.to_dos) + 1,
-            "uuid": uuid4(),
-            "title": data['title'],
-            "description": data['description'],
-            "expiration": data['expiration'],
-            "status": data['status'],
-            "user": data['user_uuid']
-        }
-        self.to_dos.append(newTodos)
-        return jsonify(data), 201
 
+        if self.user.select_per_uuid(data['user_uuid'])[1] == 200:
+            uuid = uuid4()
+            query = """INSERT INTO todos
+                                    (uuid,title,description,expiration,status,user)
+                                VALUES 
+                                    ('{}','{}','{}','{}','{}','{}') """.format(uuid, data['title'],
+                                                                               data['description'], data['expiration'],
+                                                                               data['status'], data['user_uuid'])
+            try:
+                result_query = self.engine.execute(query)
+                todos = {
+
+                    "uuid": uuid,
+                    "title": data['title'],
+                    "description": data['description'],
+                    "expiration": data['expiration'],
+                    "status": data['status'],
+                    "user": data['user_uuid']
+                }
+
+                return todos, 201
+
+            except StopIteration as ex:
+                return jsonify({'error': ex}), 404
+        return jsonify({'error': 'user not found'}), 404
     #update to-dos
     def update(self, uuid):
         for to in self.select_all():

@@ -75,7 +75,7 @@ class User(object):
 
             except StopIteration as ex:
                 return jsonify({'error': ex}), 404
-            
+
         return jsonify({'error': 'user not found'}), 404
 
 
