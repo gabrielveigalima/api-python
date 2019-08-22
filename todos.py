@@ -14,7 +14,21 @@ class ToDos(object):
 
     #select all to-dos
     def select_all(self):
-        return self.to_dos
+        query = '''
+                        SELECT *
+                        FROM todos         			     
+                       '''
+        self.result_query = self.engine.execute(query)
+        todos = []
+        for x in self.result_query:
+            todos.append({
+                "id": x[0],
+                "uuid": x[1],
+                "name": x[2],
+            })
+
+        return todos, 200
+        
 
     # select to-dos por uuid
     def select_per_uuid(self, uuid):
