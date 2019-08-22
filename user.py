@@ -65,12 +65,21 @@ class User(object):
 
     #update user
     def update(self, uuid):
-        for u in self.select_all():
-            if u['uuid'] == uuid:
-                u['nome'] = request.get_json().get('nome')
+        if self.select_per_uuid(uuid)[1] == 200:
+            name = request.get_json().get('name')
+            query = """UPDATE users SET name = '{}' WHERE uuid = '{}' """.format(name,uuid)
 
-                return jsonify(u), 200
-        return jsonify({'error': 'user not found'}), 404
+            try:
+                result_query = self.engine.execute(query)
+                user = {
+                    "name": name
+                }
+
+                return user, 200
+
+            except StopIteration as ex:
+                return jsonify({'error': ex}), 404
+
 
     #delete user
     def remove(self, uuid):
