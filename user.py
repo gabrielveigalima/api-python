@@ -29,11 +29,20 @@ class User(object):
 
     #select user per uuid
     def select_per_uuid(self, uuid):
+        query = """SELECT * FROM users WHERE uuid = '{}' """.format(uuid)
+        result_query = self.engine.execute(query)
+        try:
+            resul =  next(result_query)
+            user = {
+                "id": resul[0],
+                "uuid": resul[1],
+                "name": resul[2]
+            }
 
-        for u in self.select_all():
-            if str(u['uuid']) == uuid:
-                return jsonify(u), 200
-        return jsonify({'error': 'not found'}), 404
+            return user
+
+        except StopIteration as ex:
+            return jsonify({'error': 'not found'}), 404
 
     #insert user
     def append(self, data):
